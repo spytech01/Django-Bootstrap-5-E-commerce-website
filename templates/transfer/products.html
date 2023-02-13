@@ -1,0 +1,82 @@
+
+    
+{% extends 'index.html' %}
+
+{% load static %}
+    
+
+    {% block content %}
+    
+    <div class="small-container">
+      <!---- Sorting ---->
+      <div class="row row-2">
+        <h2>All Products</h2>
+        <select name="" id="">
+          <option value="">Default Sorting</option>
+          <option value="">Sort by Price</option>
+          <option value="">Sort by Popularity</option>
+          <option value="">Sort by Rating</option>
+          <option value="">Sort by sales</option>
+        </select>
+      </div>
+
+      <!---- products ---->
+      <div class="row">
+        {% for item in object_list %}
+        <div class="col-2">
+          <div>
+            <a href="{{ item.get_absolute_url }}">
+                <img src="{{  item.photo.url }}" alt="" />
+              <h4>{{  item.title }}</h4>
+            </a>
+            <a href="{{ item.get_absolute_url }}" >
+              <h6>{{ item.get_category_display }}</h6>
+            </a>
+          </div>
+          <div>
+            <div class="rating">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star-o"></i>
+            </div>
+
+            <p class='lead'>
+              {% if item.d_price %}
+              <del><span>${{ item.price }}</span></del>
+              <span>${{ item.d_price }}</span>
+              {% else %}
+              <p>${{ item.price }}</p>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <!---- Pagination ---->
+      {% if is_paginated %}
+      <div class="page-btn">
+
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span>&#8592;</span>
+        </a>
+        {% endif %}
+
+        <a href="?page={{ page_obj.number }}" >
+          <span>{{ page_obj.number }}</span>
+        </a>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span>&#8594;</span>
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    {% endblock content %}

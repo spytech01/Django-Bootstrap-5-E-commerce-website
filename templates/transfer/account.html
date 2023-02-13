@@ -1,0 +1,72 @@
+    {% extends 'index.html' %}
+    
+
+    {% block content %}
+  
+    <!-- Account Page -->
+
+    <div>
+      <ul>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}">Sign In</a></li>
+        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="account-page">
+      <div class="container">
+        <div class="row">
+          <div class="col-2">
+            <img src="images/image1.png" width="100%" />
+          </div>
+          <div class="col-2">
+            <div class="form-container">
+              <div class="form-btn">
+                <span onclick="login()">Login</span>
+                <span onclick="register()">Register</span>
+                <hr id="indicator" />
+              </div>
+              <form action="" id="LoginForm">
+                <input type="text" placeholder="Username" />
+                <input type="password" placeholder="Password" />
+
+                <button type="submit" class="btn">Login</button>
+                <a href="">Forgot Password</a>
+              </form>
+              <form action="" id="RegForm">
+                <input type="text" placeholder="Username" />
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+
+                <button type="submit" class="btn">Register</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endblock content %}
+
+    <!-- js for toggle form -->
+    <script>
+      var LoginForm = document.getElementById("LoginForm");
+      var RegForm = document.getElementById("RegForm");
+      var indicator = document.getElementById("indicator");
+
+      function register() {
+        RegForm.style.transform = "translateX(0px)";
+        LoginForm.style.transform = "translateX(0px)";
+        indicator.style.transform = "translateX(100px)";
+      }
+
+      function login() {
+        RegForm.style.transform = "translateX(300px)";
+        LoginForm.style.transform = "translateX(300px)";
+        indicator.style.transform = "translateX(0px)";
+      }
+    </script>

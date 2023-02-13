@@ -1,0 +1,140 @@
+    {% extends 'index.html' %}
+    {% load static %}
+
+    {% block content %}
+
+    <!-- Single Products Detail -->
+    <div class="small-container single-product">
+      <div class="row">
+        <div class="col-2">
+          <img src="{{  item.photo.url }}" alt="" width="100%" id="ProductImg" />
+
+          <div class="small-img-row">
+            <div class="small-img-col">
+              <img src="{{  item.image1.url }}" alt="" class="small-img" />
+            </div>
+            <div class="small-img-col">
+              <img src="{{  item.image2.url }}" alt="" class="small-img" />
+            </div>
+            <div class="small-img-col">
+              <img src="{{  item.image3.url }}" alt="" class="small-img" />
+            </div>
+            <div class="small-img-col">
+              <img src="{{  item.image4.url }}" alt="" class="small-img" />
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <p>{{ object.get_category_display }}</p>
+          <h2>{{ object.title }}</h2>
+
+          <p class='lead'>
+            {% if object.d_price %}
+            <del><span class="red">${{ object.price }}</span></del>
+            <span>${{ object.d_price }}</span>
+            {% else %}
+            <p>${{ object.price }}</p>
+            {% endif %}
+          </p>
+
+          <select name="" id="">
+            <option value="">Select Size</option>
+            <option value="">XXL</option>
+            <option value="">XL</option>
+            <option value="">Large</option>
+            <option value="">Medium</option>
+            <option value="">Small</option>
+          </select>
+          <input type="number" value="{{ order_item.quantity }}" />
+          <a href="{{ object.get_add_to_cart_url }}"><i class="fa fa-cart-plus" style="color:green; font-size:48px;" ></i></a>
+          <h3>Product Details<i class="fa fa-indent"></i></h3>
+          <br />
+          <p>{{ object.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="small-container">
+      <div class="row row-2">
+        <h2>Related Products</h2>
+        <p>View More</p>
+      </div>
+    </div>
+
+    <!-- Similar Products -->
+
+    <div class="small-container">
+      <div class="row">
+        <div class="col-4">
+          <img src="images/product-9.jpg" alt="" />
+          <h4>Red Printed T-shirt</h4>
+          <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+          </div>
+          <p>$50.00</p>
+        </div>
+
+        <div class="col-4">
+          <img src="images/product-10.jpg" alt="" />
+          <h4>Red Printed T-shirt</h4>
+          <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+            <i class="fa fa-star-o"></i>
+          </div>
+          <p>$50.00</p>
+        </div>
+
+        <div class="col-4">
+          <img src="images/product-11.jpg" alt="" />
+          <h4>Red Printed T-shirt</h4>
+          <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+          </div>
+          <p>$50.00</p>
+        </div>
+        <div class="col-4">
+          <img src="images/product-12.jpg" alt="" />
+          <h4>Red Printed T-shirt</h4>
+          <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+          </div>
+          <p>$50.00</p>
+        </div>
+      </div>
+    </div>
+
+    {% endblock content %}
+
+    <!-- js for product gallery -->
+    <script>
+      var ProductImg = document.getElementById("ProductImg");
+      var smallImg = document.getElementsByClassName("small-img");
+      smallImg[0].onclick = function () {
+        ProductImg.src = smallImg[0].src;
+      };
+      smallImg[1].onclick = function () {
+        ProductImg.src = smallImg[1].src;
+      };
+      smallImg[2].onclick = function () {
+        ProductImg.src = smallImg[2].src;
+      };
+      smallImg[3].onclick = function () {
+        ProductImg.src = smallImg[3].src;
+      };
+    </script>

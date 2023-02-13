@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+    
+
+{% block content %}
+
+<!-- Account Page -->
+
+<div class="account-page">
+  <div class="sl-page">
+    <div class="form-container">
+      <ul>
+        <li><h2 class="u-text">User Name</h2></li>
+        <li><h4>{{ user.username }}</h4></li>
+        <li><h2 class="u-text">User Email</h2></li>
+        <li><h4>{{ user.email }}</h4></li>
+        <li><a class="btn" href="{% url 'account_email' %}">Change E-mail</a></li>
+        <li><a class="btn" href="{% url 'account_logout' %}">Log Out</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+

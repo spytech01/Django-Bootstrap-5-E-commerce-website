@@ -1,0 +1,193 @@
+
+{% extends 'index.html' %}
+
+    
+{% load static %}
+
+
+{% block extra_head %}
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
+
+{% endblock extra_head %}
+
+{% block content %}
+
+    <div class="container mb-4">
+      <div class="py-5 text-center">
+        <h2 class="text-center">Payment</h2>
+       </div>
+
+      <!-- Checkout form -->
+      <div class="row">
+        <!-- Your cart summary -->
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your cart</span>
+            <span class="badge bg-danger badge-pill">{{ order.items.count }}</span>
+          </h4>
+          <ul class="list-group mb-3">
+            {% for order_item in order.items.all %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0"><p>{{ order_item.quantity }} x {{ order_item.item.title }}</p></h6>
+                <small class="text-muted"><p>Quantity: {{ order_item.quantity }}</p></small>
+              </div>
+              <p class='lead'>
+                <span>${{ order_item.get_total_price }}</span>
+              </p>
+            </li>
+            {% endfor %}
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="d-flex justify-content-between text-success">
+                <h6 class="my-0">Promo code</h6>
+                <small>EXAMPLECODE</small>
+              </div>
+              <span class="text-success">-$5</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>${{ order.final_price }}</strong>
+            </li>
+          </ul>
+
+          <form class="card p-2">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Promo code">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary">Redeem</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Tripe form -->
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Stripe Payment</h4>
+          <script src='https://js.stripe.com/v2/' type='text/javascript'></script>
+          <form accept-charset="UTF-8" action="." class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51MZHOvKvXFpVDvIKO31nByKxuWi5j0ovTec1zeOzcymU4WPtKTWd3C3meMb7vhwqm4O2PiHRZN088YG7WuPdkSKc00JHQHBi0n" id="payment-form" Method='POST'><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓" /><input name="_method" type="hidden" value="PUT" /><input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" /></div>
+            {% csrf_token %}
+            <div class='form-row'>
+              <div class='col-md-6 mb-3 form-group required'>
+                <label class='control-label'>Name on Card</label>
+                <input class='form-control' size='4' type='text'>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-md-6 mb-3 form-group card required'>
+                <label class='control-label'>Card Number</label>
+                <input autocomplete='off' class='form-control card-number' size='20' type='text'>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-md-2 mb-3 form-group cvc required'>
+                <label class='control-label'>CVC</label>
+                <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
+              </div>
+              <div class='col-xs-4 form-group expiration required'>
+                <label class='control-label'>Expiration</label>
+                <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
+              </div>
+              <div class='col-xs-4 form-group expiration required'>
+                <label class='control-label'> </label>
+                <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-md-12'>
+                <div class='form-control total btn btn-info'>
+                  Total:
+                  <span class='amount'>${{ order.final_price }}</span>
+                </div>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-md-12 form-group'>
+                <button class=' mt-2 form-control btn btn-primary submit-button' type='submit'>Pay »</button>
+              </div>
+            </div>
+            <div class='form-row'>
+              <div class='col-md-12 error form-group hide'>
+                <div class='alert-danger alert'>
+                  Please correct the errors and try again.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+{% endblock content %}
+
+
+{% block extra_js %}
+    <script src="//netdna.bootstrapcdn.com/bootstrap/5.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+
+      $(function() {
+        $('form.require-validation').bind('submit', function(e) {
+          var $form         = $(e.target).closest('form'),
+              inputSelector = ['input[type=email]', 'input[type=password]',
+                               'input[type=text]', 'input[type=file]',
+                               'textarea'].join(', '),
+              $inputs       = $form.find('.required').find(inputSelector),
+              $errorMessage = $form.find('div.error'),
+              valid         = true;
+      
+          $errorMessage.addClass('hide');
+          $('.has-error').removeClass('has-error');
+          $inputs.each(function(i, el) {
+            var $input = $(el);
+            if ($input.val() === '') {
+              $input.parent().addClass('has-error');
+              $errorMessage.removeClass('hide');
+              e.preventDefault(); // cancel on first error
+            }
+          });
+        });
+      });
+      
+      $(function() {
+        var $form = $("#payment-form");
+      
+        $form.on('submit', function(e) {
+          if (!$form.data('cc-on-file')) {
+            e.preventDefault();
+            Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+            Stripe.createToken({
+              number: $('.card-number').val(),
+              cvc: $('.card-cvc').val(),
+              exp_month: $('.card-expiry-month').val(),
+              exp_year: $('.card-expiry-year').val()
+            }, stripeResponseHandler);
+          }
+        });
+      
+        function stripeResponseHandler(status, response) {
+          if (response.error) {
+            $('.error')
+              .removeClass('hide')
+              .find('.alert')
+              .text(response.error.message);
+          } else {
+            // token contains id, last4, and card type
+            var token = response['id'];
+            // insert the token into the form so it gets submitted to the server
+            $form.find('input[type=text]').empty();
+            $form.append("<input type='hidden' name='reservation[stripe_token]' value='" + token + "'/>");
+            $form.get(0).submit();
+          }
+        }
+      })
+      
+
+
+    </script>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+{% endblock extra_js %}
+

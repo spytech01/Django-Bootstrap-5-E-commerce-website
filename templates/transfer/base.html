@@ -1,0 +1,152 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Red store | Ecommerce Website Design</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,200&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <div class="navbar">
+          <div class="logo">
+            <a href="{% url 'base:home' %}">
+              <img src="{% static 'images/logo.png' %}" alt="" width="125px"
+            /></a>
+          </div>
+          <nav>
+            <ul id="MenuItems">
+              <li><a href="{% url 'base:home' %}">Home</a></li>
+              <li><a href="{% url 'base:products' %}">Products</a></li>
+              <li><a href="{% url 'base:about' %}">About</a></li>
+              <li><a href="#">Contact</a></li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+              {% else %}
+              <li><a href="{% url 'base:login' %}">Sig In</a></li>
+              <li><a href="{% url 'base:signup' %}">Sign-Up</a></li>
+              {% endif %}
+              <!-- TODo: 22:20 -->
+            </ul>
+          </nav>
+          {% if user.is_authenticated %}
+          <a href="{% url 'base:profile' %}">
+            <img src="{% static 'images/user-3.png' %}" alt="" width="30px" height="30px"/>
+          </a>
+          <a href="{% url 'base:cart' %}">
+            <span>0{{ Order.items.count }}</span>
+            <img src="{% static 'images/cart.png' %}" alt="" width="30px" height="30px"/>
+          </a>
+          {% endif %}
+          <img
+            src="{% static 'images/menu.png' %}"
+            alt="Menu"
+            class="menu-icon"
+            onclick="menutoggle()"
+          />
+        </div>
+      </div>
+    </div>
+    <!----- login message prompt-------->
+    <div class="mt-5 pt-4">
+        {% if messages %}
+        <div>
+            <strong>Messages:</strong>
+            <ul>
+                {% for message in messages %}
+                <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    <!----- Cart message prompt-------->
+    <div class="mt-5 pt-4">
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% block content %}
+    
+    {% endblock content %}
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="footer-col-1">
+            <h3>Download Our App</h3>
+            <p>
+              Download App for Android <br />
+              and ios mobile phone
+            </p>
+            <div class="app-logo">
+              <img src="{% static 'images/play-store.png' %}" alt="" />
+              <img src="{% static 'images/app-store.png' %}" alt="" />
+            </div>
+          </div>
+          <div class="footer-col-2">
+            <img src="{% static 'images/logo-white.png' %}" alt="" />
+            <p>
+              Lorem, ipsum dolor sit amet consectetur <br />adipisicing elit.
+              Porro, eum?
+            </p>
+          </div>
+          <div class="footer-col-3">
+            <h3>Useful Links</h3>
+            <ul>
+              <li>Coupons</li>
+              <li>Blog Post</li>
+              <li>Return Policy</li>
+              <li>Join Affiliate</li>
+            </ul>
+          </div>
+          <div class="footer-col-4">
+            <h3>Follow us</h3>
+            <ul>
+              <li>Facebook</li>
+              <li>Twitter</li>
+              <li>Instagram</li>
+              <li>YouTube</li>
+            </ul>
+          </div>
+        </div>
+        <hr />
+        <p class="copyright">Copyright 2020 - introidx</p>
+      </div>
+    </div>
+    <!-- JS for Toggle menu -->
+    <script>
+      var MenuItems = document.getElementById("MenuItems");
+
+      MenuItems.style.maxHeight = "0px";
+
+      function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+          MenuItems.style.maxHeight = "200px";
+        } else {
+          MenuItems.style.maxHeight = "0px";
+        }
+      }
+    </script>
+  </body>
+</html>
