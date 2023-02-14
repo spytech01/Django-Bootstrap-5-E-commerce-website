@@ -139,7 +139,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-STRIPE_SECRET_KEY = 'sk_test_51MZHOvKvXFpVDvIKGxMZygbXgEBa10895yl539rBhYjrtXLHKJfWMyb7mXBC77egrYtIEkBIyhS8GRPL17IuOKwQ0016IXqtNK'
+STRIPE_SECRET_KEY = ''
 
 SITE_ID = 1
 
